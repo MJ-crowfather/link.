@@ -44,33 +44,26 @@ export const GuessForm: FC<GuessFormProps> = ({
     reValidateMode: "onSubmit",
   });
 
-  // This ref is not used anymore in LetterInput, but keeping for post-submit focus.
-  const firstInputRef = useRef<HTMLInputElement | null>(null);
-
   useEffect(() => {
     const handlePaste = (event: ClipboardEvent) => {
       event.preventDefault();
       const pastedData = event.clipboardData?.getData("text");
       if (pastedData && /^[a-zA-Z]{5}$/.test(pastedData)) {
-        form.setValue("guess", pastedData.toUpperCase(), {
+        form.setValue("guess", pastedData.toUpperCase().slice(0, 5), {
           shouldValidate: true,
         });
       }
     };
 
-    window.addEventListener("paste", handlePaste);
+    document.addEventListener("paste", handlePaste);
     return () => {
-      window.removeEventListener("paste", handlePaste);
+      document.removeEventListener("paste", handlePaste);
     };
   }, [form]);
 
   function handleSubmit(values: z.infer<typeof formSchema>) {
     onSubmit(values.guess.toUpperCase());
     form.reset();
-
-    // After reset, we can't focus the input inside LetterInput directly anymore
-    // as we removed the ref connection to avoid the type error.
-    // The user will have to click to start typing again.
   }
 
   const isSubmitDisabled =
