@@ -65,7 +65,7 @@ export const GameClient: FC<GameClientProps> = ({
   };
 
   return (
-    <div className="w-full max-w-md mx-auto flex flex-col gap-8">
+    <>
       <Header />
       <GuessList initialClue={initialClue} guesses={guesses} />
 
@@ -91,6 +91,6 @@ export const GameClient: FC<GameClientProps> = ({
         targetWord={targetWord}
         dayNumber={dayNumber}
       />
-    </div>
+    </>
   );
 };
