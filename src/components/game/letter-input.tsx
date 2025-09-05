@@ -17,10 +17,6 @@ export const LetterInput: FC<LetterInputProps> = ({
 }) => {
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
-  useEffect(() => {
-    inputsRef.current = inputsRef.current.slice(0, 5);
-  }, []);
-
   const letters = Array.from({ length: 5 }, (_, i) => value?.[i] ?? "");
 
   const handleInputChange = (

@@ -12,8 +12,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Link - The Word Association Game",
-  description: "Guess the daily word by following contextual clues from an AI.",
+  title: "Link. - The Word Association Game",
+  description: "Guess the daily 5 Letter word by building links and paving your own path.",
 };
 
 export default function RootLayout({
