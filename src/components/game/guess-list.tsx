@@ -8,7 +8,7 @@ interface GuessListProps {
 }
 
 const ClueText: FC<{ text: string }> = ({ text }) => (
-  <div className="text-secondary-foreground/80 text-center text-base font-normal">
+  <div className="text-foreground/80 text-center text-base font-normal">
     The clue is {text}
   </div>
 );
