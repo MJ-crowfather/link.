@@ -40,7 +40,7 @@ export const GameEndModal: FC<GameEndModalProps> = ({
 
   const handleShare = () => {
     // In a real app, this URL would be dynamic.
-    const appUrl = "https://link-word-game.web.app";
+    const appUrl = "https://the-link.vercel.app";
     const shareText = `🔗 Link #${dayNumber} 🔗\nScore: ${
       isWin ? `${score}/5 ⭐` : "X/5 😥"
     }\n\n${appUrl}`;
