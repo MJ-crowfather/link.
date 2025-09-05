@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -44,6 +44,9 @@ export const GuessForm: FC<GuessFormProps> = ({
     reValidateMode: "onSubmit",
   });
 
+  // 🔑 NEW: Ref to LetterInput container for focusing first input
+  const firstInputRef = useRef<HTMLInputElement | null>(null);
+
   useEffect(() => {
     const handlePaste = (event: ClipboardEvent) => {
       event.preventDefault();
@@ -64,6 +67,11 @@ export const GuessForm: FC<GuessFormProps> = ({
   function handleSubmit(values: z.infer<typeof formSchema>) {
     onSubmit(values.guess.toUpperCase());
     form.reset();
+
+    // 🔑 After reset, focus first letter box
+    setTimeout(() => {
+      firstInputRef.current?.focus();
+    }, 10);
   }
 
   const isSubmitDisabled =
@@ -83,6 +91,8 @@ export const GuessForm: FC<GuessFormProps> = ({
                     value={field.value}
                     onChange={field.onChange}
                     disabled={isLoading}
+                    // Pass ref to first input
+                    firstInputRef={firstInputRef}
                   />
                   <Button
                     type="submit"
@@ -104,7 +114,8 @@ export const GuessForm: FC<GuessFormProps> = ({
           )}
         />
         <p className="text-center text-sm text-muted-foreground">
-          {remainingGuesses} {remainingGuesses === 1 ? "guess" : "guesses"} remaining
+          {remainingGuesses}{" "}
+          {remainingGuesses === 1 ? "guess" : "guesses"} remaining
         </p>
       </form>
     </Form>

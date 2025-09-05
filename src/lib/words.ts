@@ -42,16 +42,22 @@ const wordList = [
   "WORTH", "WOULD", "WRONG", "YOUNG", "YOUTH"
 ];
 
+// This offset is used to reset the daily word counter to 1.
+// 247 was the day of year on Sep 4, 2024.
+const DAY_OFFSET = 247; 
+
 export const getDayOfYear = () => {
   const now = new Date();
   const startOfYear = new Date(Date.UTC(now.getUTCFullYear(), 0, 0));
   const diff = now.getTime() - startOfYear.getTime();
   const oneDay = 1000 * 60 * 60 * 24;
-  return Math.floor(diff / oneDay);
+  const dayOfYear = Math.floor(diff / oneDay);
+  return dayOfYear - DAY_OFFSET;
 };
 
 export const getDailyWord = () => {
-  const dayOfYear = getDayOfYear();
-  const index = dayOfYear % wordList.length;
+  const dayNumber = getDayOfYear();
+  // Ensure the index is always positive
+  const index = ((dayNumber - 1) % wordList.length + wordList.length) % wordList.length;
   return wordList[index];
 };

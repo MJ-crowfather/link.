@@ -21,14 +21,16 @@ export const LetterInput: FC<LetterInputProps> = ({
     inputsRef.current = inputsRef.current.slice(0, 5);
   }, []);
 
+  const letters = Array.from({ length: 5 }, (_, i) => value?.[i] ?? "");
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
-    const targetValue = e.target.value.toUpperCase();
-    const currentChars = (value || "     ").split("");
-    currentChars[index] = targetValue.length > 0 ? targetValue.slice(-1) : " ";
-    onChange(currentChars.join(""));
+    const targetValue = e.target.value.toUpperCase().slice(-1);
+    const newChars = [...letters];
+    newChars[index] = targetValue;
+    onChange(newChars.join(""));
 
     // Move to next input
     if (targetValue && index < 4) {
@@ -41,17 +43,13 @@ export const LetterInput: FC<LetterInputProps> = ({
     index: number
   ) => {
     if (e.key === "Backspace") {
-      const currentChars = (value || "").split("");
-      if (currentChars[index] === " " || !currentChars[index]) {
-        if (index > 0) {
-          inputsRef.current[index - 1]?.focus();
-        }
+      const newChars = [...letters];
+      if (!letters[index] && index > 0) {
+        // Go back to previous input if current is empty
+        inputsRef.current[index - 1]?.focus();
       } else {
-        while (currentChars.length < 5) {
-          currentChars.push(" ");
-        }
-        currentChars[index] = " ";
-        onChange(currentChars.join(""));
+        newChars[index] = "";
+        onChange(newChars.join(""));
       }
     } else if (e.key === "ArrowLeft" && index > 0) {
       inputsRef.current[index - 1]?.focus();
@@ -62,13 +60,13 @@ export const LetterInput: FC<LetterInputProps> = ({
 
   return (
     <div className="flex justify-center gap-2">
-      {Array.from({ length: 5 }).map((_, i) => (
+      {letters.map((char, i) => (
         <input
           key={i}
           ref={(el) => (inputsRef.current[i] = el)}
           type="text"
           maxLength={1}
-          value={value?.[i] || ""}
+          value={char}
           onChange={(e) => handleInputChange(e, i)}
           onKeyDown={(e) => handleKeyDown(e, i)}
           onFocus={(e) => e.target.select()}

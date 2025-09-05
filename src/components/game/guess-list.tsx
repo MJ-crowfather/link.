@@ -7,11 +7,22 @@ interface GuessListProps {
   guesses: Guess[];
 }
 
-const ClueText: FC<{ text: string }> = ({ text }) => (
-  <div className="text-foreground/80 text-center text-base font-normal">
-    The clue is {text}
-  </div>
-);
+const ClueText: FC<{ text: string; linkNumber?: number }> = ({ text, linkNumber }) => {
+  const prefix = linkNumber ? `The ${linkNumber}${getOrdinal(linkNumber)} Link is` : "The initial clue is";
+  
+  return (
+    <div className="text-foreground/80 text-center text-base font-normal">
+      {prefix} ‘{text}’
+    </div>
+  );
+};
+
+const getOrdinal = (n: number) => {
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return s[(v - 20) % 10] || s[v] || s[0];
+}
+
 
 const GuessWord: FC<{ text: string }> = ({ text }) => (
   <div className="flex justify-center gap-2">
@@ -43,7 +54,7 @@ export const GuessList: FC<GuessListProps> = ({ initialClue, guesses }) => {
           {guess.clue && guess.clue !== "Correct!" && (
             <>
               <ChainConnector />
-              <ClueText text={guess.clue} />
+              <ClueText text={guess.clue} linkNumber={index + 1} />
             </>
           )}
         </div>
