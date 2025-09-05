@@ -19,6 +19,7 @@ import { LetterInput } from "./letter-input";
 const formSchema = z.object({
   guess: z
     .string()
+    .trim()
     .length(5, "Guess must be 5 letters")
     .regex(/^[A-Z]+$/i, "Only letters allowed"),
 });
@@ -39,7 +40,8 @@ export const GuessForm: FC<GuessFormProps> = ({
     defaultValues: {
       guess: "",
     },
-    mode: "onChange",
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
   });
 
   useEffect(() => {
@@ -64,6 +66,9 @@ export const GuessForm: FC<GuessFormProps> = ({
     form.reset();
   }
 
+  const isSubmitDisabled =
+    isLoading || form.watch("guess").trim().length < 5;
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
@@ -83,7 +88,7 @@ export const GuessForm: FC<GuessFormProps> = ({
                     type="submit"
                     size="icon"
                     className="h-14 w-14 shrink-0"
-                    disabled={isLoading || !form.formState.isValid}
+                    disabled={isSubmitDisabled}
                   >
                     {isLoading ? (
                       <Loader2 className="animate-spin" />
