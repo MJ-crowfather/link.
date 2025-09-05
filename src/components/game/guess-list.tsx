@@ -7,9 +7,14 @@ interface GuessListProps {
   guesses: Guess[];
 }
 
-const ClueText: FC<{ text: string; linkNumber?: number }> = ({ text, linkNumber }) => {
-  const prefix = linkNumber ? `The ${linkNumber}${getOrdinal(linkNumber)} Link is` : "The initial clue is";
-  
+const ClueText: FC<{ text: string; linkNumber?: number }> = ({
+  text,
+  linkNumber,
+}) => {
+  const prefix = linkNumber
+    ? `The ${linkNumber}${getOrdinal(linkNumber)} Link is`
+    : "The initial clue is";
+
   return (
     <div className="text-foreground/80 text-center text-base font-normal">
       {prefix} ‘{text}’
@@ -21,15 +26,14 @@ const getOrdinal = (n: number) => {
   const s = ["th", "st", "nd", "rd"];
   const v = n % 100;
   return s[(v - 20) % 10] || s[v] || s[0];
-}
-
+};
 
 const GuessWord: FC<{ text: string }> = ({ text }) => (
-  <div className="flex justify-center gap-2">
+  <div className="flex justify-center gap-1 sm:gap-2">
     {Array.from({ length: 5 }).map((_, i) => (
       <div
         key={i}
-        className="w-14 h-14 bg-card border-2 border-border flex items-center justify-center text-3xl font-bold rounded-md"
+        className="w-12 h-12 sm:w-14 sm:h-14 bg-card border-2 border-border flex items-center justify-center text-3xl font-bold rounded-md"
       >
         {text[i]?.toUpperCase()}
       </div>

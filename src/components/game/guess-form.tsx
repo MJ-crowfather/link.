@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -78,7 +78,7 @@ export const GuessForm: FC<GuessFormProps> = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center gap-1 sm:gap-3">
                   <LetterInput
                     value={field.value}
                     onChange={field.onChange}
@@ -87,7 +87,7 @@ export const GuessForm: FC<GuessFormProps> = ({
                   <Button
                     type="submit"
                     size="icon"
-                    className="h-14 w-14 shrink-0"
+                    className="h-12 w-12 sm:h-14 sm:w-14 shrink-0"
                     disabled={isSubmitDisabled}
                   >
                     {isLoading ? (

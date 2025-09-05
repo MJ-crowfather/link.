@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import type { FC } from "react";
 import { cn } from "@/lib/utils";
 
@@ -26,19 +26,20 @@ export const LetterInput: FC<LetterInputProps> = ({
   ) => {
     const targetValue = e.target.value.toUpperCase();
     const newChars = [...letters];
-    
+
     // Handle single character input
     if (targetValue.length === 1) {
-        newChars[index] = targetValue;
-        onChange(newChars.join(""));
+      newChars[index] = targetValue;
+      onChange(newChars.join(""));
 
-        // Move to next input
-        if (index < 4) {
-            inputsRef.current[index + 1]?.focus();
-        }
-    } else if (targetValue.length === 0) { // Handle backspace clearing the input
-        newChars[index] = "";
-        onChange(newChars.join(""));
+      // Move to next input
+      if (index < 4) {
+        inputsRef.current[index + 1]?.focus();
+      }
+    } else if (targetValue.length === 0) {
+      // Handle backspace clearing the input
+      newChars[index] = "";
+      onChange(newChars.join(""));
     }
   };
 
@@ -59,7 +60,7 @@ export const LetterInput: FC<LetterInputProps> = ({
   };
 
   return (
-    <div className="flex justify-center gap-2">
+    <div className="flex justify-center gap-1 sm:gap-2">
       {Array.from({ length: 5 }).map((_, i) => (
         <input
           key={i}
@@ -72,7 +73,7 @@ export const LetterInput: FC<LetterInputProps> = ({
           onFocus={(e) => e.target.select()}
           disabled={disabled}
           className={cn(
-            "w-14 h-14 text-center text-3xl font-bold uppercase rounded-md",
+            "w-12 h-12 sm:w-14 sm:h-14 text-center text-3xl font-bold uppercase rounded-md",
             "bg-input border-2 border-border focus:border-primary focus:ring-2 focus:ring-ring focus:outline-none",
             "transition-all duration-200"
           )}

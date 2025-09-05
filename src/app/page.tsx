@@ -16,7 +16,7 @@ export default async function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-start p-4 sm:p-8 md:p-12">
+    <main className="flex min-h-screen flex-col items-center justify-start p-4">
       <div className="w-full max-w-md mx-auto flex flex-col gap-8 bg-card p-6 rounded-lg shadow-2xl">
         <GameClient
           targetWord={targetWord}
