@@ -44,7 +44,7 @@ export const GuessForm: FC<GuessFormProps> = ({
     reValidateMode: "onSubmit",
   });
 
-  // 🔑 NEW: Ref to LetterInput container for focusing first input
+  // This ref is not used anymore in LetterInput, but keeping for post-submit focus.
   const firstInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -68,10 +68,9 @@ export const GuessForm: FC<GuessFormProps> = ({
     onSubmit(values.guess.toUpperCase());
     form.reset();
 
-    // 🔑 After reset, focus first letter box
-    setTimeout(() => {
-      firstInputRef.current?.focus();
-    }, 10);
+    // After reset, we can't focus the input inside LetterInput directly anymore
+    // as we removed the ref connection to avoid the type error.
+    // The user will have to click to start typing again.
   }
 
   const isSubmitDisabled =
@@ -91,8 +90,6 @@ export const GuessForm: FC<GuessFormProps> = ({
                     value={field.value}
                     onChange={field.onChange}
                     disabled={isLoading}
-                    // Pass ref to first input
-                    firstInputRef={firstInputRef}
                   />
                   <Button
                     type="submit"
