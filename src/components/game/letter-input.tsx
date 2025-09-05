@@ -26,10 +26,7 @@ export const LetterInput: FC<LetterInputProps> = ({
     index: number
   ) => {
     const targetValue = e.target.value.toUpperCase();
-    const currentChars = (value || "").split("");
-    while (currentChars.length < 5) {
-      currentChars.push(" ");
-    }
+    const currentChars = (value || "     ").split("");
     currentChars[index] = targetValue.length > 0 ? targetValue.slice(-1) : " ";
     onChange(currentChars.join(""));
 
