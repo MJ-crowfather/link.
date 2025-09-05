@@ -13,7 +13,6 @@ import { CheckCircle2, XCircle, Share2 } from "lucide-react";
 import type { FC } from "react";
 import type { Guess } from "./game-client";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect, useState } from "react";
 
 interface GameEndModalProps {
   isOpen: boolean;
@@ -21,6 +20,7 @@ interface GameEndModalProps {
   status: "won" | "lost" | "playing";
   guesses: Guess[];
   targetWord: string;
+  dayNumber: number;
 }
 
 export const GameEndModal: FC<GameEndModalProps> = ({
@@ -29,17 +29,9 @@ export const GameEndModal: FC<GameEndModalProps> = ({
   status,
   guesses,
   targetWord,
+  dayNumber,
 }) => {
   const { toast } = useToast();
-  const [dayNumber, setDayNumber] = useState(1);
-
-  useEffect(() => {
-    // This needs to be in useEffect to avoid hydration errors
-    const startOfYear = new Date(new Date().getFullYear(), 0, 0);
-    const diff = (new Date() as any) - (startOfYear as any);
-    const oneDay = 1000 * 60 * 60 * 24;
-    setDayNumber(Math.floor(diff / oneDay));
-  }, []);
 
   if (status === "playing") return null;
 

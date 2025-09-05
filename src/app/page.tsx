@@ -1,9 +1,10 @@
-import { getDailyWord } from "@/lib/words";
+import { getDailyWord, getDayOfYear } from "@/lib/words";
 import { generateInitialClue } from "@/ai/flows/generate-initial-clue";
 import { GameClient } from "@/components/game/game-client";
 
 export default async function Home() {
   const targetWord = getDailyWord();
+  const dayNumber = getDayOfYear();
   let initialClue = "Let's begin...";
 
   try {
@@ -16,7 +17,11 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-4 sm:p-8 md:p-12 bg-background">
-      <GameClient targetWord={targetWord} initialClue={initialClue} />
+      <GameClient
+        targetWord={targetWord}
+        initialClue={initialClue}
+        dayNumber={dayNumber}
+      />
     </main>
   );
 }

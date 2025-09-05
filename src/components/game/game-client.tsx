@@ -19,11 +19,13 @@ type GameStatus = "playing" | "won" | "lost";
 interface GameClientProps {
   targetWord: string;
   initialClue: string;
+  dayNumber: number;
 }
 
 export const GameClient: FC<GameClientProps> = ({
   targetWord,
   initialClue,
+  dayNumber,
 }) => {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
@@ -87,6 +89,7 @@ export const GameClient: FC<GameClientProps> = ({
         status={gameStatus}
         guesses={guesses}
         targetWord={targetWord}
+        dayNumber={dayNumber}
       />
     </div>
   );
