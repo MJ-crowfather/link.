@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -11,14 +12,14 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Loader2, Send } from "lucide-react";
 import type { FC } from "react";
+import { LetterInput } from "./letter-input";
 
 const formSchema = z.object({
   guess: z
     .string()
-    .length(5, "Must be 5 letters")
+    .length(5, "Guess must be 5 letters")
     .regex(/^[A-Z]+$/i, "Only letters allowed"),
 });
 
@@ -38,7 +39,25 @@ export const GuessForm: FC<GuessFormProps> = ({
     defaultValues: {
       guess: "",
     },
+    mode: "onChange",
   });
+
+  useEffect(() => {
+    const handlePaste = (event: ClipboardEvent) => {
+      event.preventDefault();
+      const pastedData = event.clipboardData?.getData("text");
+      if (pastedData && /^[a-zA-Z]{5}$/.test(pastedData)) {
+        form.setValue("guess", pastedData.toUpperCase(), {
+          shouldValidate: true,
+        });
+      }
+    };
+
+    window.addEventListener("paste", handlePaste);
+    return () => {
+      window.removeEventListener("paste", handlePaste);
+    };
+  }, [form]);
 
   function handleSubmit(values: z.infer<typeof formSchema>) {
     onSubmit(values.guess.toUpperCase());
@@ -54,20 +73,16 @@ export const GuessForm: FC<GuessFormProps> = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <div className="relative">
-                  <Input
-                    placeholder="GUESS"
-                    {...field}
-                    maxLength={5}
-                    autoComplete="off"
-                    className="text-center text-2xl h-16 tracking-[0.3em] uppercase font-bold placeholder:font-medium placeholder:tracking-normal"
+                <div className="flex items-center gap-3">
+                  <LetterInput
+                    value={field.value}
+                    onChange={field.onChange}
                     disabled={isLoading}
-                    onChange={(e) => field.onChange(e.target.value.toUpperCase())}
                   />
                   <Button
                     type="submit"
                     size="icon"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 h-12 w-12"
+                    className="h-14 w-14 shrink-0"
                     disabled={isLoading || !form.formState.isValid}
                   >
                     {isLoading ? (
@@ -79,13 +94,12 @@ export const GuessForm: FC<GuessFormProps> = ({
                   </Button>
                 </div>
               </FormControl>
-              <FormMessage className="text-center"/>
+              <FormMessage className="text-center pt-2" />
             </FormItem>
           )}
         />
         <p className="text-center text-sm text-muted-foreground">
-          {remainingGuesses} {remainingGuesses === 1 ? "guess" : "guesses"}{" "}
-          remaining
+          {remainingGuesses} {remainingGuesses === 1 ? "guess" : "guesses"} remaining
         </p>
       </form>
     </Form>

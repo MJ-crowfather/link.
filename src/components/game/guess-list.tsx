@@ -8,14 +8,21 @@ interface GuessListProps {
 }
 
 const CluePill: FC<{ text: string }> = ({ text }) => (
-  <div className="bg-accent/80 text-accent-foreground rounded-full px-4 py-2 text-center text-base font-semibold italic shadow-sm">
+  <div className="bg-secondary text-secondary-foreground rounded-full px-4 py-2 text-center text-base font-semibold italic shadow-sm">
     "{text}"
   </div>
 );
 
-const GuessPill: FC<{ text: string }> = ({ text }) => (
-  <div className="bg-card text-card-foreground rounded-lg px-4 py-3 text-center text-xl font-bold tracking-widest shadow-md border">
-    {text.toUpperCase()}
+const GuessWord: FC<{ text: string }> = ({ text }) => (
+  <div className="flex justify-center gap-2">
+    {Array.from({ length: 5 }).map((_, i) => (
+      <div
+        key={i}
+        className="w-14 h-14 bg-card border-2 border-border flex items-center justify-center text-3xl font-bold rounded-md"
+      >
+        {text[i]?.toUpperCase()}
+      </div>
+    ))}
   </div>
 );
 
@@ -32,7 +39,7 @@ export const GuessList: FC<GuessListProps> = ({ initialClue, guesses }) => {
       {guesses.map((guess, index) => (
         <div key={index} className="flex flex-col items-center w-full">
           <ChainConnector />
-          <GuessPill text={guess.word} />
+          <GuessWord text={guess.word} />
           {guess.clue && guess.clue !== "Correct!" && (
             <>
               <ChainConnector />

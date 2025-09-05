@@ -64,7 +64,7 @@ export const GameEndModal: FC<GameEndModalProps> = ({
       <DialogContent>
         <DialogHeader className="items-center">
           {isWin ? (
-            <CheckCircle2 className="w-16 h-16 text-primary" />
+            <CheckCircle2 className="w-16 h-16 text-green-500" />
           ) : (
             <XCircle className="w-16 h-16 text-destructive" />
           )}
