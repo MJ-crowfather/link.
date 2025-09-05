@@ -16,7 +16,7 @@ export const RulesModal = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <HelpCircle className="h-6 w-6 text-primary-foreground/70 hover:text-primary-foreground" />
+          <HelpCircle className="h-6 w-6 text-foreground/70 hover:text-foreground" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
