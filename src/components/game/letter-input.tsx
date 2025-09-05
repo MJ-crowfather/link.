@@ -26,9 +26,12 @@ export const LetterInput: FC<LetterInputProps> = ({
     index: number
   ) => {
     const targetValue = e.target.value.toUpperCase();
-    const newValue = Array.from(value || "     ");
-    newValue[index] = targetValue.length > 0 ? targetValue.slice(-1) : " ";
-    onChange(newValue.join(""));
+    const currentChars = (value || "").split("");
+    while (currentChars.length < 5) {
+      currentChars.push(" ");
+    }
+    currentChars[index] = targetValue.length > 0 ? targetValue.slice(-1) : " ";
+    onChange(currentChars.join(""));
 
     // Move to next input
     if (targetValue && index < 4) {
@@ -41,14 +44,17 @@ export const LetterInput: FC<LetterInputProps> = ({
     index: number
   ) => {
     if (e.key === "Backspace") {
-      if (value[index] === " " || !value[index]) {
+      const currentChars = (value || "").split("");
+      if (currentChars[index] === " " || !currentChars[index]) {
         if (index > 0) {
           inputsRef.current[index - 1]?.focus();
         }
       } else {
-        const newValue = Array.from(value);
-        newValue[index] = " ";
-        onChange(newValue.join(""));
+        while (currentChars.length < 5) {
+          currentChars.push(" ");
+        }
+        currentChars[index] = " ";
+        onChange(currentChars.join(""));
       }
     } else if (e.key === "ArrowLeft" && index > 0) {
       inputsRef.current[index - 1]?.focus();
